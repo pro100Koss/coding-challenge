@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  engine:
+    build:
+      context: ./engine
+      dockerfile: Dockerfile
+    volumes:
+      - ./engine:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3030:3030
+    depends_on:
+      - queue
+
+  crawler:
+    build:
+      context: ./crawler
+      dockerfile: Dockerfile
+    volumes:
+      - ./crawler:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - queue
+
+  queue:
+    container_name: queue
+    image: rabbitmq:3-management
+
+
